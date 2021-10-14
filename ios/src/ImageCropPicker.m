@@ -367,9 +367,17 @@ RCT_EXPORT_METHOD(openCropper:(NSDictionary *)options
     configuration.selectionLimit = [self.options[@"multiple"] boolValue] ? 0 : 1;
 
     NSString *mediaType = self.options[@"mediaType"];
-    if ([mediaType isEqualToString:@"video"] && ![self.options[@"cropping"] boolValue]) {
+    if ([mediaType isEqualToString:@"video"]) {
+        if ([self.options[@"cropping"] boolValue]) {
+            NSException* invalidConfigException = [NSException
+                exceptionWithName:@"InvalidConfig"
+                reason:@"You can't crop videos"
+                userInfo:nil];
+            @throw invalidConfigException;
+        }
+
         configuration.filter = [PHPickerFilter videosFilter];
-    } else {
+    } else if ([mediaType isEqualToString:@"photo"]) {
         configuration.filter = [PHPickerFilter imagesFilter];
     }
 
