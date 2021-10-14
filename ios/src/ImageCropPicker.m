@@ -364,7 +364,7 @@ RCT_EXPORT_METHOD(openCropper:(NSDictionary *)options
 
 - (PHPickerConfiguration *)makeConfiguration API_AVAILABLE(ios(14)){
     PHPickerConfiguration *configuration = [[PHPickerConfiguration alloc] init];
-    configuration.selectionLimit = [self.options[@"multiple"] boolValue] ? 0 : 1;
+    configuration.selectionLimit = [self.options[@"multiple"] boolValue] ? abs([self.options[@"maxFiles"] intValue]) : 1;
 
     NSString *mediaType = self.options[@"mediaType"];
     if ([mediaType isEqualToString:@"video"]) {
